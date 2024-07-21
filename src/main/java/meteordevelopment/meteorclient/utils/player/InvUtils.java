@@ -5,12 +5,16 @@
 
 package meteordevelopment.meteorclient.utils.player;
 
+import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import meteordevelopment.meteorclient.mixininterface.IClientPlayerInteractionManager;
+import meteordevelopment.meteorclient.utils.Utils;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.SlotActionType;
+import org.jetbrains.annotations.Range;
 
 import java.util.function.Predicate;
 
@@ -151,11 +155,11 @@ public class InvUtils {
 
     // Interactions
 
-    public static boolean swap(int slot, boolean swapBack) {
+    public static boolean changeSlots(int slot, boolean changeBack) {
         if (slot == SlotUtils.OFFHAND) return true;
         if (slot < 0 || slot > 8) return false;
-        if (swapBack && previousSlot == -1) previousSlot = mc.player.getInventory().selectedSlot;
-        else if (!swapBack) previousSlot = -1;
+        if (changeBack && previousSlot == -1) previousSlot = mc.player.getInventory().selectedSlot;
+        else if (!changeBack) previousSlot = -1;
 
         mc.player.getInventory().selectedSlot = slot;
         ((IClientPlayerInteractionManager) mc.interactionManager).meteor$syncSelected();
@@ -165,9 +169,97 @@ public class InvUtils {
     public static boolean swapBack() {
         if (previousSlot == -1) return false;
 
-        boolean return_ = swap(previousSlot, false);
+        boolean return_ = changeSlots(previousSlot, false);
         previousSlot = -1;
         return return_;
+    }
+
+    /**
+     * Sends a {@link ClickSlotC2SPacket} with type PICKUP, which mimics
+     * a single click on a slot.
+     *
+     * @param slotIndex The slot index to click on
+     *
+     * @author RickyTheRacc
+     */
+    public static void click(int slotIndex) {
+        if (!Utils.canUpdate()) return;
+
+        ScreenHandler handler = mc.player.currentScreenHandler;
+        ItemStack stack = handler.getSlot(slotIndex).getStack();
+
+        Int2ObjectArrayMap<ItemStack> modifiedStacks = new Int2ObjectArrayMap<>();
+        modifiedStacks.put(slotIndex, stack);
+
+        mc.getNetworkHandler().sendPacket(new ClickSlotC2SPacket(
+            handler.syncId, handler.getRevision(),
+            SlotUtils.indexToId(slotIndex), 0,
+            SlotActionType.PICKUP, stack, modifiedStacks
+        ));
+    }
+
+    /**
+     * Sends a {@link ClickSlotC2SPacket} with type PICKUP_ALL, which mimics
+     * a double click on a slot.
+     *
+     * @param slotIndex The slot index to click on
+     *
+     * @author RickyTheRacc
+     */
+    public static void doubleClick(int slotIndex) {
+
+    }
+
+    /**
+     * Sends a {@link ClickSlotC2SPacket} with type QUICK_MOVE, which mimics a
+     * shift-click on a slot.
+     *
+     * @param slotIndex The slot index to click on
+     *
+     * @author RickyTheRacc
+     */
+    public static void shiftClick(int slotIndex) {
+
+    }
+
+    /**
+     * Simulates swapping two stacks manually via clicking in three steps.
+     * Somewhat unreliable if used in quick succession, but is less likely to
+     * be detected by anticheats. If you want to move items in/out of the
+     * hotbar quickly, check out {@link InvUtils#swap(int, int)}.
+     *
+     * @param fromIndex The slot index to move items from
+     * @param toIndex The slot index to move items to
+     *
+     * @author RickyTheRacc
+     */
+    public static void move(int fromIndex, int toIndex) {
+        click(fromIndex);
+        click(toIndex);
+        click(fromIndex);
+    }
+
+    /**
+     * Sends a {@link ClickSlotC2SPacket} with type SWAP, which mimics pressing
+     * a hotbar key to swap items to the hotbar. This is more reliable than the
+     * alternative, but can <b>only be used when interacting with the hotbar.</b>
+     * For moving two items inside the inventory use {@link InvUtils#move(int, int)}.
+     *
+     * @param fromIndex The slot index to move items from
+     * @param toIndex The hotbar slot index to move items to
+     *
+     * @author RickyTheRacc
+     */
+    public static void swap(int fromIndex, @Range(from = 0, to = 8) int toIndex) {
+
+    }
+
+
+    // Inventory Actions
+
+    public static Action click() {
+        ACTION.type = SlotActionType.PICKUP;
+        return ACTION;
     }
 
     public static Action move() {
@@ -175,16 +267,6 @@ public class InvUtils {
         ACTION.two = true;
         return ACTION;
     }
-
-    public static Action click() {
-        ACTION.type = SlotActionType.PICKUP;
-        return ACTION;
-    }
-
-    /**
-     * When writing code with quickSwap, both to and from should provide the ID of a slot, not the index.
-     * From should be the slot in the hotbar, to should be the slot you're switching an item from.
-     */
 
     public static Action quickSwap() {
         ACTION.type = SlotActionType.SWAP;

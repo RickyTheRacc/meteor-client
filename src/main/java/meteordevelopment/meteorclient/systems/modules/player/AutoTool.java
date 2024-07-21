@@ -131,7 +131,7 @@ public class AutoTool extends Module {
         }
 
         if (ticks <= 0 && shouldSwitch && bestSlot != -1) {
-            InvUtils.swap(bestSlot, switchBack.get());
+            InvUtils.changeSlots(bestSlot, switchBack.get());
             shouldSwitch = false;
         } else {
             ticks--;
@@ -172,7 +172,7 @@ public class AutoTool extends Module {
         if ((bestSlot != -1 && (bestScore > getScore(currentStack, blockState, silkTouchForEnderChest.get(), fortuneForOresCrops.get(), prefer.get(), itemStack -> !shouldStopUsing(itemStack))) || shouldStopUsing(currentStack) || !isTool(currentStack))) {
             ticks = switchDelay.get();
 
-            if (ticks == 0) InvUtils.swap(bestSlot, true);
+            if (ticks == 0) InvUtils.changeSlots(bestSlot, true);
             else shouldSwitch = true;
         }
 

@@ -108,14 +108,14 @@ public class BlockUtils {
 
         if (rotate) {
             Rotations.rotate(Rotations.getYaw(hitPos), Rotations.getPitch(hitPos), rotationPriority, () -> {
-                InvUtils.swap(slot, swapBack);
+                InvUtils.changeSlots(slot, swapBack);
 
                 interact(bhr, hand, swingHand);
 
                 if (swapBack) InvUtils.swapBack();
             });
         } else {
-            InvUtils.swap(slot, swapBack);
+            InvUtils.changeSlots(slot, swapBack);
 
             interact(bhr, hand, swingHand);
 

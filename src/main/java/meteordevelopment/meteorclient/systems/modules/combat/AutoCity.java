@@ -208,7 +208,7 @@ public class AutoCity extends Module {
     }
 
     public void mine(boolean done) {
-        InvUtils.swap(pick.slot(), switchMode.get() == SwitchMode.Silent);
+        InvUtils.changeSlots(pick.slot(), switchMode.get() == SwitchMode.Silent);
         if (rotate.get()) Rotations.rotate(Rotations.getYaw(targetPos), Rotations.getPitch(targetPos));
 
         Direction direction = BlockUtils.getDirection(targetPos);

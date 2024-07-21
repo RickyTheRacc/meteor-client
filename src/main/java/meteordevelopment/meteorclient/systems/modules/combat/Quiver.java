@@ -123,7 +123,7 @@ public class Quiver extends Module {
         timer = 0;
 
         if (!bow.isMainHand()) {
-            if (wasHotbar) InvUtils.swap(bow.slot(), true);
+            if (wasHotbar) InvUtils.changeSlots(bow.slot(), true);
             else InvUtils.move().from(mc.player.getInventory().selectedSlot).to(prevSlot);
         } else wasMainhand = true;
 

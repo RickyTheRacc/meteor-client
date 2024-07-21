@@ -195,7 +195,7 @@ public class NoFall extends Module {
                 if (item.isOffhand()) {
                     mc.interactionManager.interactItem(mc.player, Hand.OFF_HAND);
                 } else {
-                    InvUtils.swap(item.slot(), true);
+                    InvUtils.changeSlots(item.slot(), true);
                     mc.interactionManager.interactItem(mc.player, Hand.MAIN_HAND);
                     InvUtils.swapBack();
                 }

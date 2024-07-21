@@ -818,7 +818,7 @@ public class CrystalAura extends Module {
                 // Check if the item in your hand is already valid
                 if (!isValidWeaknessItem(mc.player.getMainHandStack())) {
                     // Find valid item to break with
-                    if (!InvUtils.swap(InvUtils.findInHotbar(this::isValidWeaknessItem).slot(), false)) return;
+                    if (!InvUtils.changeSlots(InvUtils.findInHotbar(this::isValidWeaknessItem).slot(), false)) return;
 
                     switchTimer = 1;
                     return;
@@ -1027,7 +1027,7 @@ public class CrystalAura extends Module {
 
         int prevSlot = mc.player.getInventory().selectedSlot;
 
-        if (autoSwitch.get() != AutoSwitchMode.None && !item.isOffhand()) InvUtils.swap(item.slot(), false);
+        if (autoSwitch.get() != AutoSwitchMode.None && !item.isOffhand()) InvUtils.changeSlots(item.slot(), false);
 
         Hand hand = item.getHand();
         if (hand == null) return;
@@ -1071,7 +1071,7 @@ public class CrystalAura extends Module {
         }
 
         // Switch back
-        if (autoSwitch.get() == AutoSwitchMode.Silent) InvUtils.swap(prevSlot, false);
+        if (autoSwitch.get() == AutoSwitchMode.Silent) InvUtils.changeSlots(prevSlot, false);
     }
 
     // Yaw steps

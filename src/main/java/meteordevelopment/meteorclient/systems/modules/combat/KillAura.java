@@ -295,7 +295,7 @@ public class KillAura extends Module {
                 if (axeResult.found()) weaponResult = axeResult;
             }
 
-            InvUtils.swap(weaponResult.slot(), false);
+            InvUtils.changeSlots(weaponResult.slot(), false);
         }
 
         if (!itemInHand()) return;

@@ -238,7 +238,7 @@ public class AutoGap extends Module {
     }
 
     private void changeSlot(int slot) {
-        InvUtils.swap(slot, false);
+        InvUtils.changeSlots(slot, false);
         this.slot = slot;
     }
 
