@@ -189,7 +189,7 @@ public class InfinityMiner extends Module {
         FindItemResult bestPick = InvUtils.findInHotbar(pickaxePredicate);
 
         if (bestPick.isOffhand()) InvUtils.shiftClick().fromOffhand().toHotbar(mc.player.getInventory().selectedSlot);
-        else if (bestPick.isHotbar()) InvUtils.swap(bestPick.slot(), false);
+        else if (bestPick.isHotbar()) InvUtils.changeSlots(bestPick.slot(), false);
 
         return InvUtils.testInMainHand(pickaxePredicate);
     }

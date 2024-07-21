@@ -119,7 +119,7 @@ public class MiddleClickExtra extends Module {
         wasHeld = result.isMainHand();
 
         if (!wasHeld) {
-            if (!quickSwap.get()) InvUtils.swap(result.slot(), swapBack.get());
+            if (!quickSwap.get()) InvUtils.changeSlots(result.slot(), swapBack.get());
             else InvUtils.quickSwap().fromId(selectedSlot).to(itemSlot);
         }
 

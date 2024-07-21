@@ -109,7 +109,7 @@ public class Flamethrower extends Module {
             if (!targetBabies.get() && entity instanceof LivingEntity && ((LivingEntity)entity).isBaby()) continue;
 
             FindItemResult findFlintAndSteel = InvUtils.findInHotbar(itemStack -> itemStack.getItem() == Items.FLINT_AND_STEEL && (!antiBreak.get() || itemStack.getDamage() < itemStack.getMaxDamage() - 1));
-            if (!InvUtils.swap(findFlintAndSteel.slot(), true)) return;
+            if (!InvUtils.changeSlots(findFlintAndSteel.slot(), true)) return;
 
             this.hand = findFlintAndSteel.getHand();
             this.entity = entity;

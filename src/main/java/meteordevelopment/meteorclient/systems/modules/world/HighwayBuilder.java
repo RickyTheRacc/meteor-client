@@ -854,7 +854,7 @@ public class HighwayBuilder extends Module {
                         return;
                     }
 
-                    InvUtils.swap(slot, false);
+                    InvUtils.changeSlots(slot, false);
 
                     if (b.rebreakEchests.get() && primed) {
                         if (rebreakTimer > 0) {
@@ -907,7 +907,7 @@ public class HighwayBuilder extends Module {
                 int slot = findAndMoveBestToolToHotbar(b, state, false);
                 if (slot == -1) return;
 
-                InvUtils.swap(slot, false);
+                InvUtils.changeSlots(slot, false);
 
                 BlockPos mcPos = pos.getBlockPos();
                 if (BlockUtils.canBreak(mcPos)) {

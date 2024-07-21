@@ -67,7 +67,7 @@ public class AutoShearer extends Module {
             if (!(entity instanceof SheepEntity) || ((SheepEntity) entity).isSheared() || ((SheepEntity) entity).isBaby() || !PlayerUtils.isWithin(entity, distance.get())) continue;
 
             FindItemResult findShear = InvUtils.findInHotbar(itemStack -> itemStack.getItem() == Items.SHEARS && (!antiBreak.get() || itemStack.getDamage() < itemStack.getMaxDamage() - 1));
-            if (!InvUtils.swap(findShear.slot(), true)) return;
+            if (!InvUtils.changeSlots(findShear.slot(), true)) return;
 
             this.hand = findShear.getHand();
             this.entity = entity;
